@@ -1,0 +1,9 @@
+---
+- name: install apisix 
+  hosts:
+    - apisix
+  gather_facts: false
+  become: yes
+  remote_user: root
+  roles:
+    - { role: install_apisix }

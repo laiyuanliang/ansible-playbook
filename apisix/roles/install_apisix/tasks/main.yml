@@ -1,0 +1,35 @@
+---
+- name: install deps
+  ansible.builtin.script: "install-dependencies.sh"
+
+- name: sync apisix package
+  ansible.builtin.unarchive:
+    src: "apisix-0522.tar.gz"
+    dest: /usr/local/
+
+- name: sync apisix and etcd service definition
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+  loop:
+      - src: "apisix.service"
+        dest: /usr/lib/systemd/system/
+
+- name: replace apisix conf
+  template: "src=config.yaml.j2 dest=/usr/local/apisix/conf/config.yaml"
+
+- name: reload systemctl config
+  ansible.builtin.shell: systemctl daemon-reload 
+
+#- name: stop and disable firewalld service
+#  ansible.builtin.service:
+#    name: firewalld
+#    state: stopped
+#    enabled: false
+
+- name: start and enable apisix service
+  ansible.builtin.service:
+    name: apisix
+    state: started
+    enabled: true
+

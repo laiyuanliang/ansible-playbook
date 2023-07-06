@@ -1,0 +1,18 @@
+# apisix systemd service
+[Unit]
+Description=apisix
+#Conflicts=apisix.service
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+Restart=on-failure
+WorkingDirectory=/usr/local/apisix
+ExecStart=/usr/local/apisix/bin/apisix start
+ExecStop=/usr/local/apisix/bin/apisix stop
+ExecReload=/usr/local/apisix/bin/apisix reload
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,56 @@
+---
+- name: stop and disable firewalld service
+  ansible.builtin.service:
+    name: firewalld
+    state: stopped
+    enabled: false
+
+- name: install wget
+  ansible.builtin.yum:
+    name: wget
+    state: installed
+
+- name: create etcd work directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{item}}"
+  loop: 
+      - /var/lib/etcd/
+      - /etc/etcd/
+
+- name: 创建etcd.conf文件
+  template: "src=etcd.conf.j2 dest=/etc/etcd/etcd.conf"
+
+- name: sync etcd service definition
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: "{{ item.mode }}"
+  loop:
+      - src: "etcd.service"
+        dest: /usr/lib/systemd/system/
+        mode: 644
+      - src: "etcdctl"
+        dest: /usr/bin/
+        mode: 755
+      - src: "etcd"
+        dest: /usr/bin/
+        mode: 755
+
+#- name: install etcd
+#  ansible.builtin.shell: |
+#    cd /usr/local/src/
+#    test -f etcd-v{{ETCD_VERSION}}-linux-amd64.tar.gz || wget https://github.com/etcd-io/etcd/releases/download/v{{ETCD_VERSION}}/etcd-v{{ETCD_VERSION}}-linux-amd64.tar.gz
+#    tar -xvf etcd-v{{ETCD_VERSION}}-linux-amd64.tar.gz
+#    test -f /usr/bin/etcd || cp -a etcd-v{{ETCD_VERSION}}-linux-amd64/etcd /usr/bin/
+#    test -f /usr/bin/etcdctl || cp -a etcd-v{{ETCD_VERSION}}-linux-amd64/etcdctl /usr/bin/
+
+- name: reload systemctl config
+  ansible.builtin.shell: systemctl daemon-reload 
+
+- name: start and enable etcd service
+  ansible.builtin.service:
+    name: etcd
+    state: started
+    enabled: true
+

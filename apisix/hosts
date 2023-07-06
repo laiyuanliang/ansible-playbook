@@ -1,0 +1,21 @@
+[etcd]
+etcd1  ansible_ssh_host=192.168.0.172 NODE_NAME=etcd1 NODE_IP=192.168.0.172
+etcd2  ansible_ssh_host=192.168.0.169 NODE_NAME=etcd2 NODE_IP=192.168.0.169
+etcd3  ansible_ssh_host=192.168.0.167 NODE_NAME=etcd3 NODE_IP=192.168.0.167
+
+[apisix]
+apisix_sev1 ansible_ssh_host=192.168.0.156 prometheus_export_addr=192.168.0.156
+apisix_sev2 ansible_ssh_host=192.168.0.166 prometheus_export_addr=192.168.0.166
+apisix_sev3 ansible_ssh_host=192.168.0.165 prometheus_export_addr=192.168.0.165
+
+[apisix-dashboard]
+apisix_dashboard_01 ansible_ssh_host=192.168.0.166
+
+[all:vars]
+
+etcd1_ip="192.168.0.172"
+etcd2_ip="192.168.0.169"
+etcd3_ip="192.168.0.167"
+
+ETCD_VERSION="3.5.4"
+ETCD_NODES="etcd1=http://192.168.0.172:2380,etcd2=http://192.168.0.169:2380,etcd3=http://192.168.0.167:2380"

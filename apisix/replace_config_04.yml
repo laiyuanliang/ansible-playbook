@@ -1,0 +1,8 @@
+---
+- name: replace apisix and etcd config
+  hosts: apisix
+  gather_facts: false
+  become: yes
+  remote_user: root
+  roles:
+    - { role: replace_config }

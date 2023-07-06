@@ -1,0 +1,9 @@
+---
+- name: install etcd
+  hosts:
+    - etcd
+  gather_facts: false
+  become: yes
+  remote_user: root
+  roles:
+    - { role: install_etcd }

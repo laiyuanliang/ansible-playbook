@@ -1,0 +1,18 @@
+---
+- name: sync apisix-dashboard package
+  ansible.builtin.copy:
+    src: apisix-dashboard-3.0.1-0.el7.x86_64.rpm 
+    dest: /tmp/
+
+- name: install apisix dashboard
+  ansible.builtin.shell: yum localinstall -y /tmp/apisix-dashboard-3.0.1-0.el7.x86_64.rpm
+
+- name: 创建etcd.conf文件
+  template: "src=conf.yaml.j2 dest=/usr/local/apisix/dashboard/conf/conf.yaml"
+
+- name: start and enable apisix-dashboard service
+  ansible.builtin.service:
+    name: apisix-dashboard
+    state: started
+    enabled: true
+

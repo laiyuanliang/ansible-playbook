@@ -1,0 +1,34 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+ext-plugin:
+  cmd: ["/path/to/apisix-go-plugin-runner/go-runner", "run"]
+plugin_attr:
+  prometheus:
+    export_addr:
+      ip: {{ prometheus_export_addr }}
+      port: 9092
+etcd:
+  host:
+   # - http://127.0.0.1:2379
+    - http://{{ etcd1_ip }}:2379
+    - http://{{ etcd2_ip }}:2379
+    - http://{{ etcd3_ip }}:2379
+apisix:
+  node_listen:
+    - 80
+apisix:
+  ssl:
+    listen_port:
+      - 443
+apisix:
+  admin_key:
+    - name: admin
+      key: edd1c9f034335f136f87ad84b625c8f1  # using fixed API token has security risk, please update it when you deploy to production environment
+      role: admin

@@ -1,0 +1,78 @@
+- name: create directory
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+  loop:
+    - /path/to/apisix-go-plugin-runner/
+    - /usr/local/openresty/nginx/conf/lua/
+    - /usr/local/apisix/modules/
+
+- name: replace lua file under openresty
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /usr/local/openresty/nginx/conf/lua/
+   backup: true
+  loop:
+    - openretre-conf-lua/cacheKey.lua
+    - openretre-conf-lua/cacheResponse.lua
+    - openretre-conf-lua/m-cache.conf
+    - openretre-conf-lua/requestCache.lua
+
+- name: replace lua file under apisix
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /usr/local/apisix/
+   backup: true
+  loop:
+    - cacheKey.lua
+    - cacheResponse.lua
+    - requestCache.lua
+
+- name: replace apisix conf
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /usr/local/apisix/conf/
+   backup: true
+  loop:
+    - config-default.yaml
+    - config.yaml
+
+- name: replace independent lua
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /usr/local/apisix/apisix/cli/
+   backup: true
+  loop:
+    - ngx_tpl.lua
+
+- name: replace geoip lib file
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /usr/local/apisix/modules/
+   backup: true
+  loop:
+    - GeoIP2-City.mmdb
+
+- name: restart apisix service
+  ansible.builtin.service:
+    name: apisix
+    state: restarted
+
+- name: stop apisix service
+  ansible.builtin.service:
+    name: apisix
+    state: stopped
+
+- name: replace go add-on
+  ansible.builtin.copy:
+   src: "{{ item }}"
+   dest: /path/to/apisix-go-plugin-runner/
+   backup: true
+  loop:
+    - go-runner
+
+- name: start apisix service
+  ansible.builtin.service:
+    name: apisix
+    state: started
+
