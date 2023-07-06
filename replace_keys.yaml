@@ -1,0 +1,19 @@
+---
+  - name: Replace line in file examples
+    hosts: addg
+    tasks:
+#    - name: "Replace line in file examples"
+#      become: yes
+#      become_user: root
+#      replace: 
+#        path: /root/.ssh/authorized_keys 
+#        regexp: '^ssh-rsa AAAAB3NzaC1yc2EAAA(.*)aws-prod-ansible-ntp-yum-02$'
+#        replace: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPMaSI1c2quKpoxcS0uMvzCv4/fB9BOHgeL6hPJ+t96h3uNrKRxndJHliV/I/9MQjWz4+Jga5pz5dlivjUz+yYafo+npVp+laybo1vcO9b2WXzhA95XXuRRgc78plZL+l/qBtg5ES5NxgBh0B0hqZpEQr1+8KOA3qXtZmtB5Q5oph6e61gTKGnQJn2CdtwuOqBFZD+JtqapuMmlOOYYWjx7yIK4YNE+/3qHuNTcC/BGYeIiQ2xkf4r9Hw0LHMjsa90od2WREnPn0dqvqmsIGIZpTPCbToZEmFJFBMrufVD3/jZoZrWW1hlAJm0/KFDc0P8p4WJ4ncr/qSUri80wc5h root@aws-prod-ansible-ntp-yum-srv03'
+#        backup: yes
+    - name: "add a line"
+      become: yes
+      become_user: root
+      lineinfile:
+        dest: /root/.ssh/authorized_keys
+        line: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPMaSI1c2quKpoxcS0uMvzCv4/fB9BOHgeL6hPJ+t96h3uNrKRxndJHliV/I/9MQjWz4+Jga5pz5dlivjUz+yYafo+npVp+laybo1vcO9b2WXzhA95XXuRRgc78plZL+l/qBtg5ES5NxgBh0B0hqZpEQr1+8KOA3qXtZmtB5Q5oph6e61gTKGnQJn2CdtwuOqBFZD+JtqapuMmlOOYYWjx7yIK4YNE+/3qHuNTcC/BGYeIiQ2xkf4r9Hw0LHMjsa90od2WREnPn0dqvqmsIGIZpTPCbToZEmFJFBMrufVD3/jZoZrWW1hlAJm0/KFDc0P8p4WJ4ncr/qSUri80wc5h root@aws-prod-ansible-ntp-yum-srv03'
+      
